@@ -97,13 +97,12 @@ export default function AboutPage() {
           <h2 className="section-title mb-6">Message from the State Coordinator</h2>
           <div className="grid md:grid-cols-4 gap-8 items-start">
             <div className="text-center">
-              <div className="w-28 h-28 rounded-full bg-gradient-to-br from-green-700 to-green-500 
-                              mx-auto flex items-center justify-center text-white text-4xl font-bold 
-                              font-display ring-4 ring-green-200 shadow-xl">
-                SC
+              <div className="w-28 h-28 rounded-full overflow-hidden mx-auto ring-4 ring-green-200 shadow-xl bg-white">
+                <img src="/kunle-oyediran.jpeg" alt="Engr. Kunle Oyediran" className="w-full h-full object-cover object-top" />
               </div>
-              <p className="font-bold text-green-900 mt-3 text-sm">State Coordinator</p>
-              <p className="text-green-600 text-xs">RTIFN Osun State Chapter</p>
+              <p className="font-bold text-green-900 mt-3 text-sm">Engr. Kunle Oyediran</p>
+              <p className="text-green-600 text-xs">State Coordinator</p>
+              <p className="text-green-500 text-xs">RTIFN Osun State Chapter</p>
             </div>
             <div className="md:col-span-3">
               <blockquote className="text-gray-700 text-lg italic leading-relaxed border-l-4 

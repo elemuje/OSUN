@@ -7,27 +7,28 @@ export const SITE = {
   name: 'RTIFN Osun State Chapter',
   tagline: 'Relax, Tinubu Is Fixing Nigeria',
   description: 'Official platform of RTIFN Osun State Chapter — communicating President Bola Ahmed Tinubu\'s reform agenda to the people of Osun State.',
-  email: 'info@rtifnosun.org',
-  phone: '+234 800 000 0000',
-  whatsapp: 'https://wa.me/2348000000000',
+  email: 'Osunrtifn@gmail.com',
+  phone: '+2348143399914',
+  whatsapp: 'https://chat.whatsapp.com/Li6sEGcN5Jw33BlGEwNCAk?mode=gi_t',
   address: 'RTIFN Secretariat, Osogbo, Osun State, Nigeria',
+  founded: '2026',
   social: {
-    facebook: 'https://facebook.com/RTIFNOsun',
-    twitter: 'https://twitter.com/RTIFNOsun',
-    instagram: 'https://instagram.com/RTIFNOsun',
-    youtube: 'https://youtube.com/@RTIFNOsun',
-    telegram: 'https://t.me/RTIFNOsun',
+    facebook:  'https://www.facebook.com/share/1DSCXrrfaN/',
+    twitter:   'https://twitter.com/RTINosunchapter',
+    instagram: 'https://instagram.com/rtifnosunchapter',
+    // YouTube removed — not applicable
   }
 }
 
 export const EXECUTIVES = [
   {
     id: 1,
-    name: 'Hon. [State Coordinator Name]',
+    name: 'Engr. Kunle Oyediran',
     position: 'State Coordinator',
     bio: 'Leads the overall strategic direction of RTIFN Osun State Chapter, coordinating activities across all 30 local government areas and representing the chapter at the national level.',
-    photo: null,
-    initials: 'SC',
+    photo: '/kunle-oyediran.jpeg',
+    initials: 'KO',
+    useLogo: false,
   },
   {
     id: 2,

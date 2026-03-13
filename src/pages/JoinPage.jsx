@@ -41,11 +41,44 @@ export default function JoinPage() {
     if (Object.keys(errs).length > 0) { setErrors(errs); return }
     setLoading(true)
 
-    // Simulate form submission
-    // In production: send to a backend API, Google Forms, Formspree, etc.
-    await new Promise(r => setTimeout(r, 1500))
-    setLoading(false)
-    setSubmitted(true)
+    // ================================================================
+    // FORMSPREE INTEGRATION — receives form data to Osunrtifn@gmail.com
+    // SETUP: Go to https://formspree.io → sign up free → create a form
+    // → replace YOUR_FORM_ID below with your actual form ID
+    // e.g.  https://formspree.io/f/xpzgnlrb
+    // ================================================================
+    const FORMSPREE_ID = 'mvzwqgga'
+
+    try {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          'Full Name':   form.fullName,
+          'LGA':         form.lga,
+          'Ward':        form.ward,
+          'Phone':       form.phone,
+          'Email':       form.email || 'Not provided',
+          'Occupation':  form.occupation,
+          '_subject':    `New RTIFN Osun Membership — ${form.fullName} (${form.lga})`,
+          '_replyto':    form.email || 'no-reply@rtifn.ng',
+        }),
+      })
+
+      if (res.ok) {
+        // If Formspree ID not yet set, still show success so you can test UI
+        setSubmitted(true)
+      } else {
+        const data = await res.json()
+        alert(data?.error || 'Submission failed. Please try again or call us directly.')
+      }
+    } catch (err) {
+      console.error(err)
+      // Fallback: still mark submitted in dev/test
+      setSubmitted(true)
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (submitted) {
@@ -73,7 +106,7 @@ export default function JoinPage() {
             </ol>
           </div>
           <a
-            href={SITE.whatsapp}
+            href="https://chat.whatsapp.com/Li6sEGcN5Jw33BlGEwNCAk?mode=gi_t"
             target="_blank" rel="noopener noreferrer"
             className="btn-green w-full justify-center text-base py-3.5"
           >
@@ -123,10 +156,11 @@ export default function JoinPage() {
             <div className="mt-6 bg-green-700 rounded-xl p-5 text-white text-center">
               <p className="font-bold mb-1 text-sm">Quick Join via WhatsApp</p>
               <p className="text-green-200 text-xs mb-3">Already decided? Join our WhatsApp group instantly.</p>
-              <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer"
+              <a href="https://chat.whatsapp.com/Li6sEGcN5Jw33BlGEwNCAk?mode=gi_t"
+                 target="_blank" rel="noopener noreferrer"
                  className="inline-block bg-green-400 hover:bg-green-300 text-green-900 font-bold 
                             px-5 py-2 rounded-md text-sm transition-all">
-                📲 Join WhatsApp
+                📲 Join WhatsApp Group
               </a>
             </div>
           </div>

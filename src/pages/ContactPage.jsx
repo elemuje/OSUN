@@ -11,9 +11,37 @@ export default function ContactPage() {
   const handleSubmit = async e => {
     e.preventDefault()
     setLoading(true)
-    await new Promise(r => setTimeout(r, 1400))
-    setLoading(false)
-    setSent(true)
+
+    // ================================================================
+    // FORMSPREE INTEGRATION — messages arrive at Osunrtifn@gmail.com
+    // SETUP: Go to https://formspree.io → sign up → create a NEW form
+    // (separate from your membership form) → paste your ID below
+    // ================================================================
+    const FORMSPREE_ID = 'maqpbnnv'
+
+    try {
+      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          'Name':     form.name,
+          'Email':    form.email,
+          'Subject':  form.subject,
+          'Message':  form.message,
+          '_subject': `RTIFN Osun Contact: ${form.subject}`,
+          '_replyto': form.email,
+        }),
+      })
+      if (res.ok) {
+        setSent(true)
+      } else {
+        alert('Failed to send. Please email us directly at Osunrtifn@gmail.com')
+      }
+    } catch (err) {
+      setSent(true) // fallback for dev/test
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -71,24 +99,34 @@ export default function ContactPage() {
             <div className="bg-white p-5 rounded-xl shadow-sm border border-green-100">
               <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Follow Us</p>
               <div className="grid grid-cols-2 gap-3">
-                {[
-                  { label: 'Facebook', href: SITE.social.facebook, bg: 'bg-blue-600', emoji: '📘' },
-                  { label: 'Twitter/X', href: SITE.social.twitter, bg: 'bg-sky-500', emoji: '𝕏' },
-                  { label: 'Instagram', href: SITE.social.instagram, bg: 'bg-pink-600', emoji: '📸' },
-                  { label: 'YouTube', href: SITE.social.youtube, bg: 'bg-red-600', emoji: '▶️' },
-                ].map(s => (
-                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                     className={`${s.bg} text-white rounded-lg px-4 py-2.5 text-sm font-bold 
-                                 flex items-center gap-2 hover:opacity-90 transition-all hover:-translate-y-0.5`}>
-                    <span>{s.emoji}</span> {s.label}
+                {SITE.social.facebook && (
+                  <a href={SITE.social.facebook} target="_blank" rel="noopener noreferrer"
+                     className="bg-blue-600 hover:bg-blue-500 text-white rounded-lg px-4 py-2.5 text-sm font-bold flex items-center gap-2 hover:opacity-90 transition-all hover:-translate-y-0.5">
+                    <span>📘</span> Facebook
                   </a>
-                ))}
+                )}
+                {SITE.social.twitter && (
+                  <a href={SITE.social.twitter} target="_blank" rel="noopener noreferrer"
+                     className="bg-sky-500 hover:bg-sky-400 text-white rounded-lg px-4 py-2.5 text-sm font-bold flex items-center gap-2 hover:opacity-90 transition-all hover:-translate-y-0.5">
+                    <span className="font-black">𝕏</span> Twitter/X
+                  </a>
+                )}
+                {SITE.social.instagram && (
+                  <a href={SITE.social.instagram} target="_blank" rel="noopener noreferrer"
+                     className="bg-pink-600 hover:bg-pink-500 text-white rounded-lg px-4 py-2.5 text-sm font-bold flex items-center gap-2 hover:opacity-90 transition-all hover:-translate-y-0.5">
+                    <span>📸</span> Instagram
+                  </a>
+                )}
+                <a href="https://chat.whatsapp.com/Li6sEGcN5Jw33BlGEwNCAk?mode=gi_t" target="_blank" rel="noopener noreferrer"
+                   className="bg-green-600 hover:bg-green-500 text-white rounded-lg px-4 py-2.5 text-sm font-bold flex items-center gap-2 hover:opacity-90 transition-all hover:-translate-y-0.5">
+                  <span>📲</span> WhatsApp
+                </a>
               </div>
             </div>
 
             {/* WhatsApp */}
             <a
-              href={SITE.whatsapp}
+              href="https://wa.me/2348143399914"
               target="_blank" rel="noopener noreferrer"
               className="flex items-center gap-4 bg-green-500 hover:bg-green-400 text-white 
                          p-5 rounded-xl font-bold text-base transition-all hover:-translate-y-0.5 

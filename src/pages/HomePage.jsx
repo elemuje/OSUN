@@ -74,24 +74,26 @@ export default function HomePage() {
 
           {/* Social Links */}
           <div className="flex justify-center gap-3 mt-10 animate-[fadeUp_1s_ease_forwards]">
-            <a href={SITE.social.facebook} target="_blank" rel="noopener noreferrer"
-               className="w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center 
-                          justify-center text-white transition-all hover:-translate-y-0.5 text-sm">
-              f
-            </a>
-            <a href={SITE.social.twitter} target="_blank" rel="noopener noreferrer"
-               className="w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center 
-                          justify-center text-white transition-all hover:-translate-y-0.5 text-sm font-bold">
-              𝕏
-            </a>
-            <a href={SITE.social.instagram} target="_blank" rel="noopener noreferrer"
-               className="w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center 
-                          justify-center text-white transition-all hover:-translate-y-0.5 text-sm">
-              ig
-            </a>
+            {SITE.social.facebook && (
+              <a href={SITE.social.facebook} target="_blank" rel="noopener noreferrer"
+                 className="w-10 h-10 rounded-lg bg-blue-700/80 hover:bg-blue-700 flex items-center justify-center text-white transition-all hover:-translate-y-0.5 text-sm font-bold">
+                f
+              </a>
+            )}
+            {SITE.social.twitter && (
+              <a href={SITE.social.twitter} target="_blank" rel="noopener noreferrer"
+                 className="w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-all hover:-translate-y-0.5 text-sm font-black">
+                𝕏
+              </a>
+            )}
+            {SITE.social.instagram && (
+              <a href={SITE.social.instagram} target="_blank" rel="noopener noreferrer"
+                 className="w-10 h-10 rounded-lg bg-pink-600/80 hover:bg-pink-600 flex items-center justify-center text-white transition-all hover:-translate-y-0.5 text-sm">
+                ig
+              </a>
+            )}
             <a href={SITE.whatsapp} target="_blank" rel="noopener noreferrer"
-               className="w-10 h-10 rounded-lg bg-green-500/50 hover:bg-green-500/70 flex items-center 
-                          justify-center text-white transition-all hover:-translate-y-0.5 text-lg">
+               className="w-10 h-10 rounded-lg bg-green-500/60 hover:bg-green-500/80 flex items-center justify-center text-white transition-all hover:-translate-y-0.5 text-lg">
               📲
             </a>
           </div>
@@ -106,7 +108,7 @@ export default function HomePage() {
               { n: '30', label: 'LGA Chapters' },
               { n: '5,000+', label: 'Members in Osun' },
               { n: '50+', label: 'Reforms Tracked' },
-              { n: '2023', label: 'Year Founded' },
+              { n: '2026', label: 'Year Founded' },
             ].map(s => (
               <div key={s.label} className="text-center px-4 py-2">
                 <div className="font-display text-3xl font-black text-green-800">{s.n}</div>

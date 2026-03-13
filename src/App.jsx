@@ -46,10 +46,10 @@ export default function App() {
 
         {/* Floating WhatsApp Button */}
         <a
-          href="https://wa.me/2348000000000"
+          href="https://chat.whatsapp.com/Li6sEGcN5Jw33BlGEwNCAk?mode=gi_t"
           target="_blank"
           rel="noopener noreferrer"
-          title="Chat on WhatsApp"
+          title="Join RTIFN WhatsApp Group"
           className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-green-500 
                      hover:bg-green-400 text-white flex items-center justify-center text-2xl 
                      shadow-2xl hover:-translate-y-1 hover:shadow-green-300/50 transition-all duration-300

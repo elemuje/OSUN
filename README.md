@@ -182,3 +182,48 @@ For technical issues with the website, contact the RTIFN Media Team.
 
 **RTIFN Osun State Chapter**  
 *Relax, Tinubu Is Fixing Nigeria* 🇳🇬
+
+---
+
+## 📬 Receiving Form Submissions (Membership + Contact)
+
+Both forms use [Formspree](https://formspree.io) — submissions land directly in **Osunrtifn@gmail.com**.
+
+### Setup (5 minutes):
+
+1. Go to **[formspree.io](https://formspree.io)** → sign up free with Osunrtifn@gmail.com
+2. Click **New Form** → name it "RTIFN Membership" → copy the **Form ID** (e.g. `xpzgnlrb`)
+3. In `src/pages/JoinPage.jsx` find:
+   ```
+   const FORMSPREE_ID = 'YOUR_FORM_ID'
+   ```
+   Replace with your real ID: `const FORMSPREE_ID = 'xpzgnlrb'`
+4. Create a **second form** called "RTIFN Contact" → copy that ID
+5. In `src/pages/ContactPage.jsx` find:
+   ```
+   const FORMSPREE_ID = 'YOUR_CONTACT_FORM_ID'
+   ```
+   Replace with the second ID.
+6. Redeploy → every form submission arrives in your Gmail, labelled with the member's name and LGA.
+
+### What each membership email contains:
+- Full Name, LGA, Ward, Phone Number, Email, Occupation
+- Subject line: "New RTIFN Osun Membership — [Name] ([LGA])"
+
+---
+
+## 📱 Social Media — Add Links When Ready
+
+Open `src/lib/data.js` and update the `social` object:
+
+```js
+social: {
+  facebook:  'https://facebook.com/YOUR_PAGE_NAME',
+  twitter:   'https://twitter.com/YOUR_HANDLE',
+  instagram: 'https://instagram.com/YOUR_HANDLE',
+}
+```
+
+Icons will **automatically appear** across the site (hero, footer, contact page) once filled in.
+Leave blank (`''`) for any platform you don't use yet.
+

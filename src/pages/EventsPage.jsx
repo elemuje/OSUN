@@ -108,7 +108,7 @@ export default function EventsPage() {
               Join our WhatsApp group to receive real-time updates on all RTIFN Osun events and activities.
             </p>
             <a
-              href="https://wa.me/2348000000000"
+              href="https://chat.whatsapp.com/Li6sEGcN5Jw33BlGEwNCAk?mode=gi_t"
               target="_blank" rel="noopener noreferrer"
               className="btn-green text-sm"
             >
