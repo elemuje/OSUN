@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { fetchPosts } from '../lib/notion'
+import { fetchPosts, searchPosts } from '../lib/supabase'
 import { BLOG_CATEGORIES } from '../lib/data'
 import PostCard from '../components/PostCard'
 
@@ -94,16 +94,16 @@ export default function BlogPage() {
           </div>
         )}
 
-        {/* Notion CTA */}
-        <div className="mt-16 bg-blue-50 rounded-xl p-7 border border-blue-100 flex flex-col sm:flex-row gap-5 items-start">
+        {/* Supabase CTA */}
+        <div className="mt-16 bg-green-50 rounded-xl p-7 border border-green-200 flex flex-col sm:flex-row gap-5 items-start">
           <div className="text-4xl">📝</div>
           <div>
-            <h4 className="font-bold text-blue-900 mb-1">Post Articles from Notion</h4>
-            <p className="text-blue-600 text-sm leading-relaxed">
-              This blog is powered by <strong>Notion CMS</strong>. To publish a new article, 
-              simply create a page in your Notion database, write your content, and set 
-              <strong> Published = ✓</strong>. The article will automatically appear here.
-              See <code className="bg-blue-100 px-1 rounded">src/lib/notion.js</code> for setup instructions.
+            <h4 className="font-bold text-green-900 mb-1">Post Articles via Supabase</h4>
+            <p className="text-green-700 text-sm leading-relaxed">
+              This blog is powered by <strong>Supabase</strong>. To publish a new article, go to your
+              <strong> Supabase dashboard → Table Editor → blog_posts → Insert row</strong>.
+              Set <strong>published = true</strong> and the article appears here instantly.
+              See <code className="bg-green-100 px-1 rounded">SUPABASE-GUIDE.md</code> for full instructions.
             </p>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { fetchPosts } from '../lib/notion'
+import { fetchPosts } from '../lib/supabase'
 import { ACHIEVEMENTS, SITE } from '../lib/data'
 import PostCard from '../components/PostCard'
 import Logo from '../components/Logo'

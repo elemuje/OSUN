@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { fetchPostBySlug } from '../lib/notion'
+import { fetchPostBySlug } from '../lib/supabase'
 import { format } from 'date-fns'
 
 const CATEGORY_COLORS = {
