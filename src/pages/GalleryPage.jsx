@@ -102,18 +102,6 @@ export default function GalleryPage() {
           ))}
         </div>
 
-        {/* Placeholder notice */}
-        <div className="mt-12 bg-amber-50 rounded-xl p-7 border border-amber-200 flex gap-4 items-start">
-          <span className="text-3xl">📸</span>
-          <div>
-            <h4 className="font-bold text-amber-900 mb-1">Add Real Photos</h4>
-            <p className="text-amber-700 text-sm leading-relaxed">
-              Replace the placeholder items in <code className="bg-amber-100 px-1.5 py-0.5 rounded">src/pages/GalleryPage.jsx</code> with real RTIFN event photos. 
-              You can upload images to a service like Cloudinary, ImgBB, or Google Drive (with public links) 
-              and add the URLs to the gallery items array.
-            </p>
-          </div>
-        </div>
       </div>
 
       {/* Lightbox */}

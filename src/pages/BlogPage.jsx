@@ -94,19 +94,6 @@ export default function BlogPage() {
           </div>
         )}
 
-        {/* Supabase CTA */}
-        <div className="mt-16 bg-green-50 rounded-xl p-7 border border-green-200 flex flex-col sm:flex-row gap-5 items-start">
-          <div className="text-4xl">📝</div>
-          <div>
-            <h4 className="font-bold text-green-900 mb-1">Post Articles via Supabase</h4>
-            <p className="text-green-700 text-sm leading-relaxed">
-              This blog is powered by <strong>Supabase</strong>. To publish a new article, go to your
-              <strong> Supabase dashboard → Table Editor → blog_posts → Insert row</strong>.
-              Set <strong>published = true</strong> and the article appears here instantly.
-              See <code className="bg-green-100 px-1 rounded">SUPABASE-GUIDE.md</code> for full instructions.
-            </p>
-          </div>
-        </div>
       </div>
     </div>
   )
