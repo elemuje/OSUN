@@ -46,9 +46,6 @@ export default function AdminPage() {
             className="w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition-all">
             Login →
           </button>
-          <p className="text-xs text-gray-300 mt-4">
-            Default password: <code className="bg-gray-100 px-1 rounded text-gray-500">rtifnosun2026</code>
-          </p>
         </div>
       </div>
     )
