@@ -8,12 +8,20 @@ const EXECUTIVES = [
     rank: 1,
   },
   {
+    id: 19,
+    name: 'Arakunrin Tobiloba Famurewa',
+    position: 'Deputy State Coordinator',
+    photo: 'https://drive.google.com/thumbnail?id=1MCUIDHBcBJAQE0wPTlGD3QAfFl5PnKv8&sz=w400',
+    initials: 'TF',
+    rank: 2,
+  },
+  {
     id: 2,
     name: 'Alhaji Abdsalam Damola Mojeed',
     position: 'State Secretary',
     photo: 'https://drive.google.com/thumbnail?id=1tLMm6xfAhJH1adm7jf8GTlvC3lRFMPP8&sz=w400',
     initials: 'AD',
-    rank: 2,
+    rank: 3,
   },
   {
     id: 4,
@@ -21,7 +29,7 @@ const EXECUTIVES = [
     position: 'Director of Strategy',
     photo: 'https://drive.google.com/thumbnail?id=1xrlPphHnJOZ9CsYjvBZcNNIGFMWz9rHS&sz=w400',
     initials: 'FK',
-    rank: 3,
+    rank: 4,
   },
   {
     id: 5,
@@ -138,16 +146,17 @@ const EXECUTIVES = [
 ]
 
 const RANK_COLORS = {
-  1: 'from-yellow-600 to-yellow-400',
-  2: 'from-green-800 to-green-600',
-  3: 'from-green-700 to-emerald-500',
-  4: 'from-green-600 to-teal-500',
+  1: 'from-yellow-600 to-yellow-400',   // Coordinator — gold
+  2: 'from-green-900 to-green-700',     // Deputy Coordinator
+  3: 'from-green-800 to-green-600',     // Secretary
+  4: 'from-green-700 to-emerald-500',
+  5: 'from-green-600 to-teal-500',
   default: 'from-green-800 to-green-600',
 }
 
 export default function ExecutivesPage() {
-  const topTwo = EXECUTIVES.filter(e => e.rank <= 2)
-  const rest   = EXECUTIVES.filter(e => e.rank >  2)
+  const topTwo = EXECUTIVES.filter(e => e.rank <= 3)
+  const rest   = EXECUTIVES.filter(e => e.rank >  3)
 
   return (
     <div>
@@ -168,8 +177,8 @@ export default function ExecutivesPage() {
           <div className="w-16 h-1 bg-gradient-to-r from-green-600 to-yellow-500 mx-auto mt-4 rounded" />
         </div>
 
-        {/* Top 2 — large featured cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto mb-12">
+        {/* Top 3 — large featured cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-4xl mx-auto mb-12">
           {topTwo.map(exec => (
             <ExecCard key={exec.id} exec={exec} large />
           ))}
