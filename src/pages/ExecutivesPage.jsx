@@ -25,15 +25,20 @@ const RTIFNLogo = ({ size = 48 }) => (
     style={{ width: size, height: size, borderRadius: '50%', objectFit: 'cover', border: '2px solid white' }} />
 )
 
-// APC Broom Logo SVG inline
-const APCLogo = () => (
-  <div style={{
-    background: 'white', borderRadius: '6px', padding: '3px 6px',
-    display: 'flex', alignItems: 'center', gap: '3px',
-  }}>
-    <div style={{ fontSize: 16 }}>🧹</div>
-    <div style={{ fontWeight: 900, fontSize: 13, color: '#006400', letterSpacing: 1 }}>APC</div>
-  </div>
+// APC Official Logo
+const APCLogo = ({ size = 44 }) => (
+  <img
+    src="/apc-logo.jpeg"
+    alt="APC"
+    style={{
+      width: size,
+      height: size,
+      borderRadius: '6px',
+      objectFit: 'cover',
+      border: '2px solid rgba(255,255,255,0.4)',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+    }}
+  />
 )
 
 export default function ExecutivesPage() {
@@ -63,8 +68,13 @@ export default function ExecutivesPage() {
           {top3.map(exec => <ExecCard key={exec.id} exec={exec} large />)}
         </div>
 
-        {/* Rest — responsive grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {/* Rest — centered on all screen sizes */}
+        <div style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: '24px',
+        }}>
           {rest.map(exec => <ExecCard key={exec.id} exec={exec} />)}
         </div>
       </div>
@@ -74,12 +84,11 @@ export default function ExecutivesPage() {
 
 function ExecCard({ exec, large = false }) {
   const w = large ? 280 : 240
-  const h = large ? 380 : 330
-  const photoH = large ? 200 : 170
 
   return (
     <div style={{
       width: w,
+      maxWidth: '100%',
       borderRadius: 16,
       overflow: 'hidden',
       boxShadow: '0 8px 32px rgba(0,80,0,0.25)',
@@ -100,7 +109,7 @@ function ExecCard({ exec, large = false }) {
           padding: '10px 12px 6px',
         }}>
           <RTIFNLogo size={large ? 44 : 38} />
-          <APCLogo />
+          <APCLogo size={large ? 44 : 38} />
         </div>
 
         {/* Watermark text */}
