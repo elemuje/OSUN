@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import {
   adminFetchAllPosts,
   adminCreatePost,
@@ -390,10 +390,12 @@ function PostForm({ initial, onSave, onCancel, isEdit }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (!form.title.trim())    return alert('Title is required')
-    if (!form.slug.trim())     return alert('Slug is required')
-    if (!form.category)        return alert('Please select a category')
-    if (!form.content.trim())  return alert('Content cannot be empty')
+    if (!form.title.trim())   return alert('Title is required')
+    if (!form.slug.trim())    return alert('Slug is required')
+    if (!form.category)       return alert('Please select a category')
+    // Strip HTML tags to check if content is empty
+    const plainText = form.content.replace(/<[^>]*>/g, '').trim()
+    if (!plainText)           return alert('Article content cannot be empty')
     setSaving(true)
     await onSave(form)
     setSaving(false)
@@ -457,32 +459,15 @@ function PostForm({ initial, onSave, onCancel, isEdit }) {
           </div>
 
           {/* Content */}
+          {/* Rich Text Editor */}
           <div className="bg-white rounded-xl p-5 shadow-sm border border-green-100">
-            <label className="block text-xs font-bold text-green-800 uppercase tracking-wider mb-2">
-              Article Content * <span className="text-gray-400 font-normal normal-case">(HTML supported)</span>
+            <label className="block text-xs font-bold text-green-800 uppercase tracking-wider mb-3">
+              Article Content *
             </label>
-            <div className="mb-3 flex flex-wrap gap-2">
-              {[
-                ['H2', '<h2>Section Title</h2>'],
-                ['Para', '<p>Your paragraph here.</p>'],
-                ['Quote', '<blockquote>Quote text here.</blockquote>'],
-                ['Bold', '<strong>bold text</strong>'],
-                ['List', '<ul>\n  <li>Item one</li>\n  <li>Item two</li>\n</ul>'],
-              ].map(([label, snippet]) => (
-                <button key={label} type="button"
-                  onClick={() => setForm(p => ({ ...p, content: p.content + '\n' + snippet }))}
-                  className="text-xs bg-green-50 hover:bg-green-100 text-green-700 font-bold px-3 py-1.5 rounded-lg border border-green-200 transition-all">
-                  + {label}
-                </button>
-              ))}
-            </div>
-            <textarea name="content" value={form.content} onChange={handleChange} required
-              rows={18}
-              placeholder="<p>Start writing your article here...</p>&#10;&#10;<h2>Section Heading</h2>&#10;<p>More content...</p>"
-              className="w-full text-sm text-gray-700 font-mono border-0 outline-none resize-y bg-gray-50 rounded-lg p-4 leading-relaxed placeholder-gray-300" />
-            <p className="text-xs text-gray-400 mt-2">
-              Tip: Use &lt;p&gt; for paragraphs, &lt;h2&gt; for headings, &lt;blockquote&gt; for quotes, &lt;ul&gt;&lt;li&gt; for lists
-            </p>
+            <RichEditor
+              value={form.content}
+              onChange={val => setForm(p => ({ ...p, content: val }))}
+            />
           </div>
         </div>
 
@@ -616,5 +601,170 @@ function PostForm({ initial, onSave, onCancel, isEdit }) {
         </div>
       </div>
     </form>
+  )
+}
+
+// ── Rich Text Editor Component ────────────────────────────────
+function RichEditor({ value, onChange }) {
+  const editorRef = useRef(null)
+  const isUpdating = useRef(false)
+
+  // Set initial content once
+  useEffect(() => {
+    if (!editorRef.current) return
+    if (!value && editorRef.current.innerHTML === '') return
+    // Only set HTML if editor is empty (initial load / edit mode)
+    if (editorRef.current.innerHTML !== value && !isUpdating.current) {
+      editorRef.current.innerHTML = value || ''
+    }
+  }, []) // eslint-disable-line
+
+  // When editing an existing post, load content
+  useEffect(() => {
+    if (!editorRef.current) return
+    if (value && editorRef.current.innerHTML === '') {
+      editorRef.current.innerHTML = value
+    }
+  }, [value])
+
+  function cmd(command, val = null) {
+    editorRef.current?.focus()
+    document.execCommand(command, false, val)
+    syncContent()
+  }
+
+  function syncContent() {
+    isUpdating.current = true
+    onChange(editorRef.current?.innerHTML || '')
+    setTimeout(() => { isUpdating.current = false }, 50)
+  }
+
+  function handleHeading() {
+    editorRef.current?.focus()
+    document.execCommand('formatBlock', false, 'h2')
+    syncContent()
+  }
+
+  function handleQuote() {
+    editorRef.current?.focus()
+    document.execCommand('formatBlock', false, 'blockquote')
+    syncContent()
+  }
+
+  function handleParagraph() {
+    editorRef.current?.focus()
+    document.execCommand('formatBlock', false, 'p')
+    syncContent()
+  }
+
+  const toolbarBtnBase = `
+    px-3 py-2 rounded-lg text-sm font-bold border transition-all
+    hover:bg-green-100 hover:border-green-400 hover:text-green-800
+    bg-white border-green-200 text-green-700 cursor-pointer
+    flex items-center gap-1
+  `
+
+  return (
+    <div className="border-2 border-green-200 rounded-xl overflow-hidden focus-within:border-green-500 transition-all">
+      {/* Toolbar */}
+      <div className="flex flex-wrap gap-1.5 p-2.5 bg-green-50 border-b border-green-200">
+        {/* Text style */}
+        <button type="button" onClick={() => cmd('bold')}
+          className={toolbarBtnBase} title="Bold">
+          <strong>B</strong>
+        </button>
+        <button type="button" onClick={() => cmd('italic')}
+          className={toolbarBtnBase} title="Italic">
+          <em>I</em>
+        </button>
+        <button type="button" onClick={() => cmd('underline')}
+          className={toolbarBtnBase} title="Underline">
+          <u>U</u>
+        </button>
+
+        <div className="w-px bg-green-300 mx-1" />
+
+        {/* Block formats */}
+        <button type="button" onClick={handleHeading}
+          className={toolbarBtnBase} title="Heading">
+          H2
+        </button>
+        <button type="button" onClick={handleParagraph}
+          className={toolbarBtnBase} title="Normal paragraph">
+          ¶ Para
+        </button>
+        <button type="button" onClick={handleQuote}
+          className={toolbarBtnBase} title="Blockquote">
+          " Quote
+        </button>
+
+        <div className="w-px bg-green-300 mx-1" />
+
+        {/* Lists */}
+        <button type="button" onClick={() => cmd('insertUnorderedList')}
+          className={toolbarBtnBase} title="Bullet list">
+          • List
+        </button>
+        <button type="button" onClick={() => cmd('insertOrderedList')}
+          className={toolbarBtnBase} title="Numbered list">
+          1. List
+        </button>
+
+        <div className="w-px bg-green-300 mx-1" />
+
+        {/* Alignment */}
+        <button type="button" onClick={() => cmd('justifyLeft')}
+          className={toolbarBtnBase} title="Align left">⬅</button>
+        <button type="button" onClick={() => cmd('justifyCenter')}
+          className={toolbarBtnBase} title="Center">≡</button>
+
+        {/* Clear */}
+        <button type="button" onClick={() => cmd('removeFormat')}
+          className={`${toolbarBtnBase} text-red-500 hover:bg-red-50 hover:border-red-300`}
+          title="Clear formatting">
+          ✕ Clear
+        </button>
+      </div>
+
+      {/* Editable area */}
+      <div
+        ref={editorRef}
+        contentEditable
+        suppressContentEditableWarning
+        onInput={syncContent}
+        onKeyDown={e => {
+          // Enter key → new paragraph
+          if (e.key === 'Enter' && !e.shiftKey) {
+            document.execCommand('insertParagraph', false)
+            e.preventDefault()
+            syncContent()
+          }
+        }}
+        style={{
+          minHeight: 320,
+          padding: '16px 18px',
+          outline: 'none',
+          fontSize: 15,
+          lineHeight: 1.8,
+          color: '#333',
+          fontFamily: "'Source Sans 3', sans-serif",
+        }}
+        className="focus:outline-none [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-green-900 [&_h2]:mt-5 [&_h2]:mb-2
+                   [&_p]:mb-3 [&_blockquote]:border-l-4 [&_blockquote]:border-green-500 [&_blockquote]:pl-4
+                   [&_blockquote]:italic [&_blockquote]:text-green-800 [&_blockquote]:bg-green-50 [&_blockquote]:py-2
+                   [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-3 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:mb-3
+                   [&_li]:mb-1 [&_strong]:font-bold [&_em]:italic"
+        data-placeholder="Start writing your article here... Select text to bold/italic it, or use the toolbar buttons above."
+      />
+
+      {/* Placeholder CSS */}
+      <style>{`
+        [contenteditable]:empty:before {
+          content: attr(data-placeholder);
+          color: #aaa;
+          pointer-events: none;
+        }
+      `}</style>
+    </div>
   )
 }
