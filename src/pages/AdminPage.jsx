@@ -804,8 +804,8 @@ function GalleryAdmin({ showToast }) {
   const [loading,  setLoading]  = useState(true)
   const [saving,   setSaving]   = useState(false)
   const [deleting, setDeleting] = useState(null)
-  const [form,     setForm]     = useState({ title: '', image_url: '', category: '' })
-  const [preview,  setPreview]  = useState(null)
+  const [form,     setForm]     = useState({ image_urls: '', category: '' })
+  const [previews, setPreviews] = useState([])
   const [sbUrl,    setSbUrl]    = useState('')
   const [sbKey,    setSbKey]    = useState('')
 
@@ -836,39 +836,59 @@ function GalleryAdmin({ showToast }) {
     setLoading(false)
   }
 
-  function toThumb(url) {
+  function toThumb(url, size = 200) {
     if (!url) return null
     const m = url.match(/[?&]id=([\w-]{10,})/) || url.match(/\/file\/d\/([\w-]{10,})/)
-    if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`
-    if (/^[\w-]{25,}$/.test(url.trim())) return `https://drive.google.com/thumbnail?id=${url.trim()}&sz=w200`
+    if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w${size}`
+    if (/^[\w-]{25,}$/.test(url.trim())) return `https://drive.google.com/thumbnail?id=${url.trim()}&sz=w${size}`
     return url
   }
 
+  // Parse multiple links — supports newlines OR commas as separators
+  function parseLinks(raw) {
+    return raw
+      .split(/[\n,]+/)          // split by newline or comma
+      .map(s => s.trim())
+      .filter(s => s.length > 5) // remove empty lines
+  }
+
   function handleUrlChange(e) {
-    const url = e.target.value
-    setForm(p => ({ ...p, image_url: url }))
-    setPreview(toThumb(url))
+    const raw = e.target.value
+    setForm(p => ({ ...p, image_urls: raw }))
+    const links = parseLinks(raw)
+    setPreviews(links.map(l => toThumb(l)).filter(Boolean))
   }
 
   async function handleAdd(e) {
     e.preventDefault()
-    if (!form.image_url.trim()) return alert('Please paste a Google Drive image link')
-    if (!form.category)         return alert('Please select a category')
+    const links = parseLinks(form.image_urls)
+    if (links.length === 0) return alert('Please paste at least one Google Drive image link')
+    if (!form.category)     return alert('Please select a category')
     setSaving(true)
+
     try {
+      // Insert all photos in one batch request
+      const rows = links.map(url => ({
+        image_url: url,
+        category:  form.category,
+        title:     '',
+      }))
+
       const res = await fetch(`${sbUrl}/rest/v1/gallery_photos`, {
-        method: 'POST',
+        method:  'POST',
         headers: { ...headers, Prefer: 'return=representation' },
-        body: JSON.stringify({ title: form.title, image_url: form.image_url.trim(), category: form.category }),
+        body:    JSON.stringify(rows),
       })
+
       if (res.ok) {
-        showToast('Photo added! ✅')
-        setForm({ title: '', image_url: '', category: '' })
-        setPreview(null)
+        const count = links.length
+        showToast(`${count} photo${count > 1 ? 's' : ''} added! ✅`)
+        setForm({ image_urls: '', category: '' })
+        setPreviews([])
         loadPhotos()
       } else {
         const err = await res.json()
-        showToast('Error: ' + (err.message || 'Failed to add photo'), 'error')
+        showToast('Error: ' + (err.message || 'Failed to add photos'), 'error')
       }
     } catch (err) {
       showToast('Error: ' + err.message, 'error')
@@ -891,22 +911,26 @@ function GalleryAdmin({ showToast }) {
     <div className="space-y-8">
       {/* Add Photo Form */}
       <div className="bg-white rounded-2xl shadow-md border border-green-100 p-6">
-        <h2 className="font-display text-xl font-bold text-green-900 mb-5">📸 Add Photo to Gallery</h2>
+        <h2 className="font-display text-xl font-bold text-green-900 mb-1">📸 Add Photos to Gallery</h2>
+        <p className="text-gray-400 text-sm mb-5">Paste one link per line — or separate with commas — to upload multiple photos at once</p>
         <form onSubmit={handleAdd} className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-bold text-green-800 uppercase tracking-wider mb-1.5">
-                Google Drive Image Link *
+                Google Drive Links * <span className="text-green-500 font-normal normal-case">(one per line or comma-separated)</span>
               </label>
-              <input
-                type="text"
-                value={form.image_url}
+              <textarea
+                value={form.image_urls}
                 onChange={handleUrlChange}
-                placeholder="https://drive.google.com/open?id=... or paste file ID"
-                className="input-field text-sm"
+                rows={6}
+                placeholder={`https://drive.google.com/open?id=ABC123\nhttps://drive.google.com/open?id=DEF456\nhttps://drive.google.com/open?id=GHI789\n\nOr paste file IDs:\nABC123xyz\nDEF456xyz`}
+                className="input-field text-sm font-mono resize-y"
               />
               <p className="text-xs text-gray-400 mt-1">
-                Right-click photo in Drive → Get link → paste here
+                {parseLinks(form.image_urls).length > 0
+                  ? <span className="text-green-600 font-bold">✅ {parseLinks(form.image_urls).length} link{parseLinks(form.image_urls).length > 1 ? 's' : ''} detected</span>
+                  : 'Right-click each photo in Drive → Get link → paste here'
+                }
               </p>
             </div>
             <div>
@@ -914,44 +938,40 @@ function GalleryAdmin({ showToast }) {
                 Category *
               </label>
               <select value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))}
-                className="input-field text-sm">
+                className="input-field text-sm mb-3">
                 <option value="">— Select Category —</option>
                 {GALLERY_ALBUMS.map(a => (
                   <option key={a.id} value={a.id}>{a.icon} {a.label}</option>
                 ))}
               </select>
+
+              {/* Previews */}
+              {previews.length > 0 && (
+                <div>
+                  <p className="text-xs font-bold text-green-800 uppercase tracking-wider mb-2">
+                    Preview ({previews.length} photo{previews.length > 1 ? 's' : ''})
+                  </p>
+                  <div className="grid grid-cols-3 gap-2 max-h-48 overflow-y-auto">
+                    {previews.map((src, i) => (
+                      <div key={i} className="aspect-square rounded-lg overflow-hidden bg-green-50 border border-green-100">
+                        <img src={src} alt={`Preview ${i + 1}`}
+                          className="w-full h-full object-cover"
+                          onError={e => { e.target.parentElement.innerHTML = '<div class="w-full h-full flex items-center justify-center text-red-400 text-xs">❌</div>' }} />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-green-800 uppercase tracking-wider mb-1.5">
-              Caption (optional)
-            </label>
-            <input
-              type="text"
-              value={form.title}
-              onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
-              placeholder="Short description of this photo"
-              className="input-field text-sm"
-            />
-          </div>
-
-          {/* Preview */}
-          {preview && (
-            <div className="flex items-center gap-4 p-3 bg-green-50 rounded-xl border border-green-100">
-              <img src={preview} alt="Preview" className="w-20 h-20 object-cover rounded-lg shadow"
-                onError={e => e.target.style.display = 'none'} />
-              <div>
-                <p className="text-green-700 font-semibold text-sm">✅ Image preview loaded</p>
-                <p className="text-gray-400 text-xs">This is how it will look in the gallery</p>
-              </div>
-            </div>
-          )}
-
-          <button type="submit" disabled={saving}
+          <button type="submit" disabled={saving || parseLinks(form.image_urls).length === 0}
             className="bg-green-700 hover:bg-green-600 disabled:bg-green-300 text-white font-bold 
                        py-3 px-8 rounded-xl text-sm uppercase tracking-wide transition-all flex items-center gap-2">
-            {saving ? <><span className="animate-spin">⏳</span> Adding...</> : '+ Add to Gallery'}
+            {saving
+              ? <><span className="animate-spin">⏳</span> Adding {parseLinks(form.image_urls).length} photo{parseLinks(form.image_urls).length > 1 ? 's' : ''}...</>
+              : `+ Add ${parseLinks(form.image_urls).length > 0 ? parseLinks(form.image_urls).length + ' ' : ''}Photo${parseLinks(form.image_urls).length !== 1 ? 's' : ''}`
+            }
           </button>
         </form>
       </div>
