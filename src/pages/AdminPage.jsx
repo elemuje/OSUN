@@ -804,7 +804,7 @@ function GalleryAdmin({ showToast }) {
   const [loading,  setLoading]  = useState(true)
   const [saving,   setSaving]   = useState(false)
   const [deleting, setDeleting] = useState(null)
-  const [form,     setForm]     = useState({ image_urls: '', category: '' })
+  const [form,     setForm]     = useState({ image_urls: '', category: '', caption: '' })
   const [previews, setPreviews] = useState([])
   const [sbUrl,    setSbUrl]    = useState('')
   const [sbKey,    setSbKey]    = useState('')
@@ -868,10 +868,10 @@ function GalleryAdmin({ showToast }) {
 
     try {
       // Insert all photos in one batch request
-      const rows = links.map(url => ({
+      const rows = links.map((url, i) => ({
         image_url: url,
         category:  form.category,
-        title:     '',
+        title:     links.length === 1 ? form.caption : form.caption ? `${form.caption} (${i + 1})` : '',
       }))
 
       const res = await fetch(`${sbUrl}/rest/v1/gallery_photos`, {
@@ -883,7 +883,7 @@ function GalleryAdmin({ showToast }) {
       if (res.ok) {
         const count = links.length
         showToast(`${count} photo${count > 1 ? 's' : ''} added! ✅`)
-        setForm({ image_urls: '', category: '' })
+        setForm({ image_urls: '', category: '', caption: '' })
         setPreviews([])
         loadPhotos()
       } else {
@@ -944,6 +944,25 @@ function GalleryAdmin({ showToast }) {
                   <option key={a.id} value={a.id}>{a.icon} {a.label}</option>
                 ))}
               </select>
+
+              {/* Caption */}
+              <div className="mb-3">
+                <label className="block text-xs font-bold text-green-800 uppercase tracking-wider mb-1.5">
+                  Caption / Title <span className="text-gray-400 font-normal normal-case">(optional)</span>
+                </label>
+                <input
+                  type="text"
+                  value={form.caption}
+                  onChange={e => setForm(p => ({ ...p, caption: e.target.value }))}
+                  placeholder="e.g. RTIFN Osun Inaugural Summit 2026"
+                  className="input-field text-sm"
+                />
+                {parseLinks(form.image_urls).length > 1 && form.caption && (
+                  <p className="text-xs text-green-500 mt-1">
+                    ℹ️ Multiple photos: captions will be numbered automatically (e.g. "{form.caption} (1)", "{form.caption} (2)"...)
+                  </p>
+                )}
+              </div>
 
               {/* Previews */}
               {previews.length > 0 && (
