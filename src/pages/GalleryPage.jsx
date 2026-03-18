@@ -190,19 +190,6 @@ CREATE POLICY "Anon manage gallery" ON gallery_photos FOR ALL TO anon USING (tru
           ))
         )}
 
-        {/* How to add photos tip */}
-        <div className="mt-8 bg-green-50 rounded-xl p-6 border border-green-100 flex gap-4 items-start">
-          <span className="text-3xl">💡</span>
-          <div>
-            <h4 className="font-bold text-green-900 mb-1">How to Add Photos to the Gallery</h4>
-            <ol className="text-green-700 text-sm leading-relaxed space-y-1 list-decimal list-inside">
-              <li>Upload your photo to the corresponding <strong>Google Drive folder</strong></li>
-              <li>Right-click the photo → <strong>Get link</strong> → set to "Anyone with the link"</li>
-              <li>Go to <strong>/admin</strong> → Gallery tab → paste the link and select the category</li>
-              <li>Photo appears on the website instantly ✅</li>
-            </ol>
-          </div>
-        </div>
       </div>
 
       {/* Lightbox */}
