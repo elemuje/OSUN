@@ -165,11 +165,28 @@ function AdminDashboard({ onLogout }) {
           </div>
           <div>
             <div className="font-display font-bold text-sm leading-tight">RTIFN Osun Admin</div>
-            <div className="text-green-300 text-xs">Blog Management Panel</div>
+            <div className="text-green-300 text-xs">Management Panel</div>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          {view !== 'list' && (
+          {/* Tab switcher */}
+          {(view === 'list' || view === 'gallery') && (
+            <div className="flex bg-green-800 rounded-lg p-1 gap-1">
+              <button
+                onClick={() => setView('list')}
+                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all
+                  ${view === 'list' ? 'bg-white text-green-900' : 'text-green-200 hover:text-white'}`}>
+                📝 Blog
+              </button>
+              <button
+                onClick={() => setView('gallery')}
+                className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all
+                  ${view === 'gallery' ? 'bg-white text-green-900' : 'text-green-200 hover:text-white'}`}>
+                📸 Gallery
+              </button>
+            </div>
+          )}
+          {(view === 'new' || view === 'edit') && (
             <button onClick={() => { setView('list'); setEditing(null) }}
               className="text-green-300 hover:text-white text-sm font-semibold">
               ← Back to Posts
@@ -321,6 +338,11 @@ function AdminDashboard({ onLogout }) {
             onCancel={() => { setView('list'); setEditing(null) }}
             isEdit={view === 'edit'}
           />
+        )}
+
+        {/* ── GALLERY VIEW ── */}
+        {view === 'gallery' && (
+          <GalleryAdmin showToast={showToast} />
         )}
       </div>
     </div>
@@ -765,6 +787,252 @@ function RichEditor({ value, onChange }) {
           pointer-events: none;
         }
       `}</style>
+    </div>
+  )
+}
+
+// ── Gallery Admin Component ───────────────────────────────────
+const GALLERY_ALBUMS = [
+  { id: 'meetings',   label: 'RTIFN Meetings',       icon: '🏛️' },
+  { id: 'community',  label: 'Community Engagement', icon: '🤝' },
+  { id: 'leadership', label: 'Leadership',            icon: '👥' },
+  { id: 'campaign',   label: 'Campaign Events',       icon: '⚡' },
+]
+
+function GalleryAdmin({ showToast }) {
+  const [photos,   setPhotos]   = useState([])
+  const [loading,  setLoading]  = useState(true)
+  const [saving,   setSaving]   = useState(false)
+  const [deleting, setDeleting] = useState(null)
+  const [form,     setForm]     = useState({ title: '', image_url: '', category: '' })
+  const [preview,  setPreview]  = useState(null)
+  const [sbUrl,    setSbUrl]    = useState('')
+  const [sbKey,    setSbKey]    = useState('')
+
+  useEffect(() => {
+    import('../lib/supabase').then(m => {
+      setSbUrl(m.SUPABASE_URL)
+      setSbKey(m.SUPABASE_ANON_KEY)
+    })
+  }, [])
+
+  useEffect(() => {
+    if (sbUrl && sbKey) loadPhotos()
+  }, [sbUrl, sbKey])
+
+  const headers = {
+    'Content-Type':  'application/json',
+    apikey:          sbKey,
+    Authorization:   `Bearer ${sbKey}`,
+  }
+
+  async function loadPhotos() {
+    setLoading(true)
+    try {
+      const res = await fetch(`${sbUrl}/rest/v1/gallery_photos?select=*&order=created_at.desc`, { headers })
+      const data = res.ok ? await res.json() : []
+      setPhotos(Array.isArray(data) ? data : [])
+    } catch { setPhotos([]) }
+    setLoading(false)
+  }
+
+  function toThumb(url) {
+    if (!url) return null
+    const m = url.match(/[?&]id=([\w-]{10,})/) || url.match(/\/file\/d\/([\w-]{10,})/)
+    if (m) return `https://drive.google.com/thumbnail?id=${m[1]}&sz=w200`
+    if (/^[\w-]{25,}$/.test(url.trim())) return `https://drive.google.com/thumbnail?id=${url.trim()}&sz=w200`
+    return url
+  }
+
+  function handleUrlChange(e) {
+    const url = e.target.value
+    setForm(p => ({ ...p, image_url: url }))
+    setPreview(toThumb(url))
+  }
+
+  async function handleAdd(e) {
+    e.preventDefault()
+    if (!form.image_url.trim()) return alert('Please paste a Google Drive image link')
+    if (!form.category)         return alert('Please select a category')
+    setSaving(true)
+    try {
+      const res = await fetch(`${sbUrl}/rest/v1/gallery_photos`, {
+        method: 'POST',
+        headers: { ...headers, Prefer: 'return=representation' },
+        body: JSON.stringify({ title: form.title, image_url: form.image_url.trim(), category: form.category }),
+      })
+      if (res.ok) {
+        showToast('Photo added! ✅')
+        setForm({ title: '', image_url: '', category: '' })
+        setPreview(null)
+        loadPhotos()
+      } else {
+        const err = await res.json()
+        showToast('Error: ' + (err.message || 'Failed to add photo'), 'error')
+      }
+    } catch (err) {
+      showToast('Error: ' + err.message, 'error')
+    }
+    setSaving(false)
+  }
+
+  async function handleDelete(id) {
+    try {
+      await fetch(`${sbUrl}/rest/v1/gallery_photos?id=eq.${id}`, { method: 'DELETE', headers })
+      showToast('Photo removed.')
+      setDeleting(null)
+      loadPhotos()
+    } catch (err) {
+      showToast('Delete failed: ' + err.message, 'error')
+    }
+  }
+
+  return (
+    <div className="space-y-8">
+      {/* Add Photo Form */}
+      <div className="bg-white rounded-2xl shadow-md border border-green-100 p-6">
+        <h2 className="font-display text-xl font-bold text-green-900 mb-5">📸 Add Photo to Gallery</h2>
+        <form onSubmit={handleAdd} className="space-y-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-green-800 uppercase tracking-wider mb-1.5">
+                Google Drive Image Link *
+              </label>
+              <input
+                type="text"
+                value={form.image_url}
+                onChange={handleUrlChange}
+                placeholder="https://drive.google.com/open?id=... or paste file ID"
+                className="input-field text-sm"
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                Right-click photo in Drive → Get link → paste here
+              </p>
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-green-800 uppercase tracking-wider mb-1.5">
+                Category *
+              </label>
+              <select value={form.category} onChange={e => setForm(p => ({ ...p, category: e.target.value }))}
+                className="input-field text-sm">
+                <option value="">— Select Category —</option>
+                {GALLERY_ALBUMS.map(a => (
+                  <option key={a.id} value={a.id}>{a.icon} {a.label}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-green-800 uppercase tracking-wider mb-1.5">
+              Caption (optional)
+            </label>
+            <input
+              type="text"
+              value={form.title}
+              onChange={e => setForm(p => ({ ...p, title: e.target.value }))}
+              placeholder="Short description of this photo"
+              className="input-field text-sm"
+            />
+          </div>
+
+          {/* Preview */}
+          {preview && (
+            <div className="flex items-center gap-4 p-3 bg-green-50 rounded-xl border border-green-100">
+              <img src={preview} alt="Preview" className="w-20 h-20 object-cover rounded-lg shadow"
+                onError={e => e.target.style.display = 'none'} />
+              <div>
+                <p className="text-green-700 font-semibold text-sm">✅ Image preview loaded</p>
+                <p className="text-gray-400 text-xs">This is how it will look in the gallery</p>
+              </div>
+            </div>
+          )}
+
+          <button type="submit" disabled={saving}
+            className="bg-green-700 hover:bg-green-600 disabled:bg-green-300 text-white font-bold 
+                       py-3 px-8 rounded-xl text-sm uppercase tracking-wide transition-all flex items-center gap-2">
+            {saving ? <><span className="animate-spin">⏳</span> Adding...</> : '+ Add to Gallery'}
+          </button>
+        </form>
+      </div>
+
+      {/* Photo List */}
+      <div className="bg-white rounded-2xl shadow-md border border-green-100 overflow-hidden">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-green-50">
+          <h2 className="font-display text-lg font-bold text-green-900">
+            Gallery Photos {photos.length > 0 && `(${photos.length})`}
+          </h2>
+          <button onClick={loadPhotos} className="text-green-600 hover:text-green-800 text-sm font-semibold">
+            ↻ Refresh
+          </button>
+        </div>
+
+        {loading ? (
+          <div className="py-12 text-center"><div className="text-3xl animate-pulse mb-2">📸</div>
+            <p className="text-gray-400">Loading gallery...</p></div>
+        ) : photos.length === 0 ? (
+          <div className="py-12 text-center">
+            <div className="text-4xl mb-3">🖼️</div>
+            <p className="text-gray-400 font-semibold">No photos yet. Add your first photo above.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 p-4">
+            {photos.map(photo => {
+              const thumb = toThumb(photo.image_url)
+              const album = GALLERY_ALBUMS.find(a => a.id === photo.category)
+              return (
+                <div key={photo.id} className="relative group rounded-xl overflow-hidden shadow-sm border border-green-100">
+                  <div className="aspect-square bg-green-50">
+                    {thumb && (
+                      <img src={thumb} alt={photo.title || ''}
+                        className="w-full h-full object-cover"
+                        onError={e => e.target.parentElement.classList.add('flex','items-center','justify-center')} />
+                    )}
+                  </div>
+                  {/* Overlay on hover */}
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all flex flex-col items-center justify-center gap-2 opacity-0 group-hover:opacity-100">
+                    <button onClick={() => setDeleting(photo)}
+                      className="bg-red-600 hover:bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg">
+                      🗑️ Remove
+                    </button>
+                  </div>
+                  {/* Category badge */}
+                  <div className="absolute top-1.5 left-1.5 bg-black/50 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-full">
+                    {album?.icon} {album?.label?.split(' ')[0]}
+                  </div>
+                  {/* Title */}
+                  {photo.title && (
+                    <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs p-1.5 truncate">
+                      {photo.title}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Delete confirm */}
+      {deleting && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center px-6">
+          <div className="bg-white rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <div className="text-5xl mb-3">🗑️</div>
+            <h3 className="font-display text-xl font-bold text-gray-900 mb-2">Remove Photo?</h3>
+            <p className="text-gray-500 text-sm mb-6">This will remove the photo from the gallery. The original file in Google Drive won't be affected.</p>
+            <div className="flex gap-3">
+              <button onClick={() => setDeleting(null)}
+                className="flex-1 border-2 border-gray-200 text-gray-600 font-bold py-2.5 rounded-lg hover:bg-gray-50">
+                Cancel
+              </button>
+              <button onClick={() => handleDelete(deleting.id)}
+                className="flex-1 bg-red-600 hover:bg-red-500 text-white font-bold py-2.5 rounded-lg">
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

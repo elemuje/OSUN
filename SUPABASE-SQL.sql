@@ -68,3 +68,26 @@ CREATE POLICY "Anon delete blog images"
 -- ✅ Upload images to blog-images bucket
 -- ✅ Toggle published/draft
 -- ============================================================
+
+-- ============================================================
+-- GALLERY PHOTOS TABLE
+-- Run this to enable the photo gallery feature
+-- ============================================================
+CREATE TABLE IF NOT EXISTS gallery_photos (
+  id          BIGSERIAL PRIMARY KEY,
+  title       TEXT,
+  image_url   TEXT NOT NULL,
+  category    TEXT NOT NULL,
+  created_at  TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE gallery_photos ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public read gallery"  ON gallery_photos;
+DROP POLICY IF EXISTS "Anon manage gallery"  ON gallery_photos;
+
+CREATE POLICY "Public read gallery"
+  ON gallery_photos FOR SELECT TO anon, authenticated USING (true);
+
+CREATE POLICY "Anon manage gallery"
+  ON gallery_photos FOR ALL TO anon USING (true) WITH CHECK (true);
