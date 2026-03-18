@@ -20,8 +20,9 @@ const EXECUTIVES = [
   { id:18, name:'Adisa Ismail Adesola',                  position:'Director of Youth Mobilization',           photo:'https://drive.google.com/thumbnail?id=1W6XFkISWDCB9PZBq-tol_gg2Ur47rgE6&sz=w400',  initials:'AI', rank:19 },
   { id:21, name:'Engr. Yusuf Alaba (Lady Engr.)',         position:'Assistant Secretary',                      photo:'/exec-yusuf-alaba.jpeg',      initials:'YA', rank:20 },
   { id:22, name:'Hon. Abolade Nureni A. (Oneday)',        position:'Director of Party Stakeholders Engagement',photo:'/exec-abolade-nureni.jpeg',    initials:'AN', rank:21 },
-  { id:23, name:'David Olufunsho Fagbohungbe',            position:'Director of Planning and Research',        photo:'/exec-david-fagbohungbe.jpeg', initials:'DO', rank:22 },
+  { id:23, name:'Egunjobi Samuel Oluwaseun',               position:'Director of Planning and Research',        photo:'/exec-egunjobi-samuel.jpeg',   initials:'ES', rank:22 },
   { id:24, name:'Gomma Yusuf Lawal',                      position:'Director of Non-Indigen (Hausa Community)',photo:'/exec-gomma-lawal.jpeg',       initials:'GY', rank:23 },
+  { id:25, name:'Salami Adijat Yetunde',                  position:'Deputy Women Leader',                      photo:'https://drive.google.com/thumbnail?id=1CMeLCTQuYqA6JRJ5PXtuDA6nCO2L6X_P&sz=w400', initials:'SY', rank:24 },
 ]
 
 const RTIFNLogo = ({ size = 44 }) => (
