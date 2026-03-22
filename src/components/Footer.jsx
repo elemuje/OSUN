@@ -102,7 +102,18 @@ export default function Footer() {
           <p className="text-xs text-green-500 text-center sm:text-left">
             © {new Date().getFullYear()} RTIFN Osun State Chapter. All Rights Reserved. 🇳🇬
           </p>
-          <p className="text-xs text-green-600">Founded {SITE.founded} · Built with ❤️ for a better Nigeria</p>
+          <p className="text-xs text-green-600">
+            Founded {SITE.founded} · Developed by{' '}
+            <a
+              href="https://mujeebdev.vercel.app/#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-yellow-400 hover:text-yellow-300 font-bold transition-colors"
+            >
+              MJD
+            </a>
+            {' '}Concept
+          </p>
         </div>
       </div>
     </footer>
