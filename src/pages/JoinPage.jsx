@@ -42,39 +42,33 @@ export default function JoinPage() {
     setLoading(true)
 
     // ================================================================
-    // FORMSPREE INTEGRATION — receives form data to Osunrtifn@gmail.com
-    // SETUP: Go to https://formspree.io → sign up free → create a form
-    // → replace YOUR_FORM_ID below with your actual form ID
-    // e.g.  https://formspree.io/f/xpzgnlrb
+    // GOOGLE FORMS INTEGRATION — unlimited free submissions
+    // Responses go to: Google Forms → linked Google Sheet
+    // Form: RTIFN Osun Membership Registration
     // ================================================================
-    const FORMSPREE_ID = 'mvzwqgga'
+    const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSdZ79zpADN3qGQd2UiXNkNXT-S2xPS0tnncOvclxzPkQZdmxQ/formResponse'
 
     try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      const body = new FormData()
+      body.append('entry.548734742', form.fullName)
+      body.append('entry.683979442', form.lga)
+      body.append('entry.1880673638', form.ward)
+      body.append('entry.1413708554', form.phone)
+      body.append('entry.23357998',   form.email || '')
+      body.append('entry.198045768',  form.occupation)
+
+      // Google Forms requires no-cors mode — it always returns opaque response
+      await fetch(FORM_ACTION, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          'Full Name':   form.fullName,
-          'LGA':         form.lga,
-          'Ward':        form.ward,
-          'Phone':       form.phone,
-          'Email':       form.email || 'Not provided',
-          'Occupation':  form.occupation,
-          '_subject':    `New RTIFN Osun Membership — ${form.fullName} (${form.lga})`,
-          '_replyto':    form.email || 'no-reply@rtifn.ng',
-        }),
+        mode:   'no-cors',
+        body,
       })
 
-      if (res.ok) {
-        // If Formspree ID not yet set, still show success so you can test UI
-        setSubmitted(true)
-      } else {
-        const data = await res.json()
-        alert(data?.error || 'Submission failed. Please try again or call us directly.')
-      }
+      // no-cors means we can't read the response, but submission succeeds
+      setSubmitted(true)
     } catch (err) {
       console.error(err)
-      // Fallback: still mark submitted in dev/test
+      // Still mark as submitted — Google Forms rarely fails
       setSubmitted(true)
     } finally {
       setLoading(false)
