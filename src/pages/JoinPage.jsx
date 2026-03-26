@@ -42,33 +42,29 @@ export default function JoinPage() {
     setLoading(true)
 
     // ================================================================
-    // GOOGLE FORMS INTEGRATION — unlimited free submissions
-    // Responses go to: Google Forms → linked Google Sheet
-    // Form: RTIFN Osun Membership Registration
+    // GOOGLE APPS SCRIPT — Membership Registration
+    // Submissions go directly into Google Sheet
     // ================================================================
-    const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSdZ79zpADN3qGQd2UiXNkNXT-S2xPS0tnncOvclxzPkQZdmxQ/formResponse'
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw7a1j0Qh4CI6ZMtkTp4i5aVmO-w6wKtPhxyExsqjUUi6yUuUN479nnnzIA5O3gfGoq/exec'
 
     try {
-      const body = new FormData()
-      body.append('entry.548734742', form.fullName)
-      body.append('entry.683979442', form.lga)
-      body.append('entry.1880673638', form.ward)
-      body.append('entry.1413708554', form.phone)
-      body.append('entry.23357998',   form.email || '')
-      body.append('entry.198045768',  form.occupation)
-
-      // Google Forms requires no-cors mode — it always returns opaque response
-      await fetch(FORM_ACTION, {
-        method: 'POST',
-        mode:   'no-cors',
-        body,
+      const params = new URLSearchParams({
+        fullName:   form.fullName,
+        lga:        form.lga,
+        ward:       form.ward,
+        phone:      form.phone,
+        email:      form.email || '',
+        occupation: form.occupation,
       })
 
-      // no-cors means we can't read the response, but submission succeeds
+      await fetch(`${SCRIPT_URL}?${params}`, {
+        method: 'GET',
+        mode:   'no-cors',
+      })
+
       setSubmitted(true)
     } catch (err) {
       console.error(err)
-      // Still mark as submitted — Google Forms rarely fails
       setSubmitted(true)
     } finally {
       setLoading(false)
