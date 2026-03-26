@@ -13,32 +13,28 @@ export default function ContactPage() {
     setLoading(true)
 
     // ================================================================
-    // FORMSPREE INTEGRATION — messages arrive at Osunrtifn@gmail.com
-    // SETUP: Go to https://formspree.io → sign up → create a NEW form
-    // (separate from your membership form) → paste your ID below
+    // GOOGLE FORMS INTEGRATION — unlimited free submissions
+    // Responses go directly into Google Sheet
+    // Form: RTIFN Osun Contact Us
     // ================================================================
-    const FORMSPREE_ID = 'maqpbnnv'
+    const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSexVFikfXbfoz0DS4tfH6n-H9KKgymHiNhRI9g7WWaxpwV11w/formResponse'
 
     try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      const body = new FormData()
+      body.append('entry.1042555683', form.name)
+      body.append('entry.1467150520', form.email)
+      body.append('entry.1873813635', form.subject)
+      body.append('entry.1766641217', form.message)
+
+      await fetch(FORM_ACTION, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          'Name':     form.name,
-          'Email':    form.email,
-          'Subject':  form.subject,
-          'Message':  form.message,
-          '_subject': `RTIFN Osun Contact: ${form.subject}`,
-          '_replyto': form.email,
-        }),
+        mode:   'no-cors',
+        body,
       })
-      if (res.ok) {
-        setSent(true)
-      } else {
-        alert('Failed to send. Please email us directly at Osunrtifn@gmail.com')
-      }
+
+      setSent(true)
     } catch (err) {
-      setSent(true) // fallback for dev/test
+      setSent(true)
     } finally {
       setLoading(false)
     }
