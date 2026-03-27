@@ -71,6 +71,27 @@ export default function ExecutivesPage() {
         <div style={{ display:'flex', flexWrap:'wrap', justifyContent:'center', gap:24 }}>
           {rest.map(exec => <ExecCard key={exec.id} exec={exec} />)}
         </div>
+
+        {/* ── LG COORDINATORS SUBSECTION ── */}
+        <div className="mt-20">
+          {/* Section Header */}
+          <div className="text-center mb-12">
+            <div className="w-full h-px bg-gradient-to-r from-transparent via-green-300 to-transparent mb-10" />
+            <span className="section-label">Grassroots Leadership</span>
+            <h2 className="section-title">Local Government Coordinators</h2>
+            <p className="text-gray-500 max-w-xl mx-auto text-sm mt-2">
+              RTIFN Osun State Chapter coordinators across all local government areas
+            </p>
+            <div className="w-16 h-1 bg-gradient-to-r from-green-600 to-yellow-500 mx-auto mt-4 rounded" />
+          </div>
+
+          {/* LG Coordinators Grid */}
+          <div style={{ display:'flex', flexWrap:'wrap', justifyContent:'center', gap:20 }}>
+            {LG_COORDINATORS.map((coord, i) => (
+              <LGCard key={i} coord={coord} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -207,6 +228,140 @@ function ExecCard({ exec, large = false }) {
           from promises to progress!!!
         </div>
 
+      </div>
+    </div>
+  )
+}
+
+// ── LG Coordinators Data ─────────────────────────────────────
+const LG_COORDINATORS = [
+  { name:'Olabiran Matthew Segun',        lga:'Ola-Oluwa LGA',      photo:'https://drive.google.com/thumbnail?id=1VMLDG-u6HhrSrUSNLsMnmF3psKxrDFm3&sz=w400', initials:'OM' },
+  { name:'Opapeju Surajudeen Adelani',    lga:'Irepodun LGA',       photo:'https://drive.google.com/thumbnail?id=1TOyGto0WbmZmfTM6pGveKKhcrx-UEuYD&sz=w400', initials:'OS' },
+  { name:'Oparinde Dayo Francis',         lga:'Boluwaduro LGA',     photo:'https://drive.google.com/thumbnail?id=1DiByqxmjbDgewYfDRYFdu-MXvcbTnvxU&sz=w400', initials:'OD' },
+  { name:'Muritala Ismail Ayinde',        lga:'Orolu LGA',          photo:'https://drive.google.com/thumbnail?id=1_FWmjyp94HkgOq2D1BSZw27C71hAhMY_&sz=w400', initials:'MI' },
+  { name:'Ayilara Mutiu Idowu',           lga:'Ilesa West LGA',     photo:'https://drive.google.com/thumbnail?id=1TewGJ5mZv4o49_YTTU_5JX9WD9Hkk7Qz&sz=w400', initials:'AM' },
+  { name:'Adediran Sefiu Abiodun',        lga:'Atakumosa East LGA', photo:'https://drive.google.com/thumbnail?id=1T_eGxsNotMUvVCMVMJ20-jXxuF3oSNlu&sz=w400', initials:'AS' },
+  { name:'Salahudeen Abeebullahi Adisa',  lga:'Ede North LGA',      photo:'https://drive.google.com/thumbnail?id=17jSfLk3tpvvYSjBfXtWzOEwIrFk-Qaw_&sz=w400', initials:'SA' },
+  { name:'Aderemi Adelani Olufemi',       lga:'Ila LGA',            photo:'https://drive.google.com/thumbnail?id=12JiwE1SRlqtSs2eHeGV8BMbdgvwJUMn_&sz=w400', initials:'AA' },
+  { name:'Olatona Adeola Olayinka',       lga:'Olorunda LGA',       photo:'https://drive.google.com/thumbnail?id=1wS-LUBjL9t_s143GkhvNrIDuN1a1IZCT&sz=w400', initials:'OA' },
+  { name:'Moshood Sodiq Adeniyi',         lga:'Irewole LGA',        photo:'https://drive.google.com/thumbnail?id=1sSo9LXmGK4FMjXOx4vy14PqwSdyxtCyJ&sz=w400', initials:'MS' },
+  { name:'Ajiboye Oluwafemi',             lga:'Ife Central LGA',    photo:'https://drive.google.com/thumbnail?id=19XFbKhnBJ8WI8EbFrTl9natXMszX8rDY&sz=w400', initials:'AO' },
+  { name:'Ayodele Badmus Tosin Mercy',    lga:'Obokun LGA',         photo:'https://drive.google.com/thumbnail?id=1g4tsvPDuxdUFuMkb-jdCSWmcTYko3bFc&sz=w400', initials:'AB' },
+  { name:'Adediran Adedapo',              lga:'Ayedaade LGA',       photo:'https://drive.google.com/thumbnail?id=10or0wmECRDnKsWESumCV-dBXVvm5m1um&sz=w400', initials:'AA' },
+  { name:'Ariyibi Samson Olalekan',       lga:'Ilesa East LGA',     photo:'https://drive.google.com/thumbnail?id=1G803svnG7KffB2eHIgS4OspB5ORSdh-H&sz=w400', initials:'AS' },
+  { name:'Salam Semiu',                   lga:'Ejigbo LGA',         photo:'https://drive.google.com/thumbnail?id=1QE-Q8Y8K3uU03xj2oUBLSxOie9BizKfp&sz=w400', initials:'SS' },
+  { name:'Adebayo Akeem Olalekan',        lga:'Osogbo LGA',         photo:'https://drive.google.com/thumbnail?id=1VGbJt-uOs6-5QZObT2MMuZDjgJdpp1QE&sz=w400', initials:'AA' },
+  { name:'Oyetola Adebowale Ibrahim',     lga:'Ede South LGA',      photo:'https://drive.google.com/thumbnail?id=1n14zofZNu4QSYWb9W0Ja4yN7HB35Phc_&sz=w400', initials:'OA' },
+  { name:'Agunbiade Olajide Kabiru',      lga:'Isokan LGA',         photo:'https://drive.google.com/thumbnail?id=1P98CS_jTm7X1lauM_l9kWXVvBwul_Ecv&sz=w400', initials:'AO' },
+  { name:'Olaifa Adewale Adelani',        lga:'Ife East LGA',       photo:'https://drive.google.com/thumbnail?id=1rJxgXUzmssWvWjuQlCLKhioErEey2Q19&sz=w400', initials:'OA' },
+  { name:'Olowolabi Funminiyi David',     lga:'Ifedayo LGA',        photo:'https://drive.google.com/thumbnail?id=1kaBcrxAkk_5YHFZxWe3Fi72_mht0JRTv&sz=w400', initials:'OF' },
+  { name:'Babalola Taiwo',                lga:'Ife North LGA',      photo:'https://drive.google.com/thumbnail?id=1j8MBaWtnX9vMp857XNnkXOhSsT4dZ78C&sz=w400', initials:'BT' },
+  { name:'Adebayo Adeola Mariam',         lga:'Area Office',        photo:'https://drive.google.com/thumbnail?id=1eDBT4HR5lrhM6lGvuML30Dfi0mDo5ITU&sz=w400', initials:'AA' },
+]
+
+// ── LG Coordinator Card ───────────────────────────────────────
+function LGCard({ coord }) {
+  return (
+    <div style={{
+      width: 200,
+      maxWidth: 'calc(100vw - 48px)',
+      borderRadius: 14,
+      overflow: 'hidden',
+      boxShadow: '0 6px 24px rgba(0,80,0,0.20)',
+      fontFamily: "'Source Sans 3', sans-serif",
+      background: 'linear-gradient(160deg, #1a5c1a 0%, #2e8b2e 40%, #4caf4c 70%, #2e8b2e 90%, #1a5c1a 100%)',
+    }}>
+      {/* Logos */}
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'8px 10px 4px' }}>
+        <RTIFNLogo size={32} />
+        <APCLogo size={32} />
+      </div>
+
+      {/* Watermark */}
+      <div style={{
+        position:'relative',
+      }}>
+        <div style={{
+          position:'absolute', top:'50%', left:'50%', zIndex:0,
+          transform:'translate(-50%, -50%) rotate(-20deg)',
+          fontSize:26, fontWeight:900,
+          color:'rgba(255,255,255,0.07)', whiteSpace:'nowrap',
+          pointerEvents:'none', userSelect:'none', fontFamily:'serif',
+        }}>
+          Osun State
+        </div>
+
+        {/* Photo */}
+        <div style={{
+          margin:'2px auto 0',
+          width: 130,
+          height: 150,
+          overflow:'hidden',
+          borderRadius:'10px 10px 0 0',
+          border:'2px solid rgba(255,255,255,0.3)',
+          background:'rgba(0,60,0,0.4)',
+          position:'relative',
+          zIndex:1,
+        }}>
+          {coord.photo && (
+            <img src={coord.photo} alt={coord.name}
+              style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'top', display:'block' }}
+              onError={e => {
+                e.target.style.display = 'none'
+                if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex'
+              }}
+            />
+          )}
+          <div style={{
+            display: coord.photo ? 'none' : 'flex',
+            position:'absolute', inset:0,
+            alignItems:'center', justifyContent:'center',
+            fontSize:30, fontWeight:900, color:'rgba(255,255,255,0.5)', fontFamily:'serif',
+          }}>
+            {coord.initials}
+          </div>
+        </div>
+      </div>
+
+      {/* LGA Badge */}
+      <div style={{
+        margin:'6px 8px 0',
+        background:'linear-gradient(90deg, #0a3d0a, #1a5c1a, #0a3d0a)',
+        border:'1px solid rgba(218,165,32,0.4)',
+        borderRadius:5, padding:'5px 18px', textAlign:'center',
+        position:'relative',
+      }}>
+        <span style={{ position:'absolute', left:5, top:'50%', transform:'translateY(-50%)', color:'rgba(218,165,32,0.6)', fontSize:10 }}>❧</span>
+        <span style={{ position:'absolute', right:5, top:'50%', transform:'translateY(-50%)', color:'rgba(218,165,32,0.6)', fontSize:10 }}>❧</span>
+        <div style={{ color:'white', fontSize:11, fontWeight:700, fontFamily:"'Playfair Display', serif" }}>
+          {coord.name}
+        </div>
+      </div>
+
+      {/* Osun State */}
+      <div style={{ textAlign:'center', color:'#f0f0f0', fontSize:13, fontWeight:900, letterSpacing:2, textTransform:'uppercase', marginTop:4 }}>
+        OSUN STATE
+      </div>
+
+      {/* Position */}
+      <div style={{ textAlign:'center', padding:'2px 8px' }}>
+        <div style={{ color:'#FFD700', fontSize:10, fontWeight:900, textTransform:'uppercase', letterSpacing:0.8, lineHeight:1.3 }}>
+          LG Coordinator
+        </div>
+        <div style={{ color:'rgba(255,255,255,0.85)', fontSize:10, fontWeight:700, marginTop:1 }}>
+          {coord.lga}
+        </div>
+      </div>
+
+      {/* RTIFN label */}
+      <div style={{ textAlign:'center', padding:'4px 8px 2px', borderTop:'1px solid rgba(255,255,255,0.15)', marginTop:5 }}>
+        <div style={{ color:'rgba(255,255,255,0.85)', fontSize:9, fontWeight:700, letterSpacing:0.5, textTransform:'uppercase' }}>RTIFN</div>
+        <div style={{ color:'rgba(255,255,255,0.65)', fontSize:8, letterSpacing:0.3 }}>(RELAX TINUBU IS FIXING NIGERIA)</div>
+      </div>
+
+      {/* Tagline */}
+      <div style={{ textAlign:'center', color:'rgba(255,255,255,0.55)', fontSize:8, fontStyle:'italic', letterSpacing:1, paddingBottom:8, marginTop:2 }}>
+        from promises to progress!!!
       </div>
     </div>
   )
