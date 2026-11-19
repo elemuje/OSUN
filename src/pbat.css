@@ -1,0 +1,112 @@
+.pbat-page { background: #f5f6f0; }
+.pbat-page button, .pbat-page a { -webkit-tap-highlight-color: transparent; }
+.pbat-page :focus-visible { outline: 3px solid #b8860b; outline-offset: 4px; }
+.pbat-intro { background: linear-gradient(115deg, #042004, #0e3d0e); color: #fff; padding: 64px 24px; }
+.pbat-intro-inner { max-width: 1120px; margin: auto; display: grid; grid-template-columns: 1fr 300px; gap: 72px; align-items: center; }
+.pbat-eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #b0e0b0; font-weight: 700; }
+.pbat-intro h1 { color: #fcd34d; font-family: 'Source Sans 3', sans-serif; font-size: 16px; letter-spacing: .12em; font-weight: 700; margin: 24px 0 12px; }
+.pbat-intro h2 { font-size: clamp(34px, 4vw, 52px); line-height: 1.15; }
+.pbat-intro h2 span { color: #fcd34d; }
+.pbat-description { color: #e2f0df; max-width: 610px; font-size: 19px; line-height: 1.65; margin-top: 22px; }
+.pbat-book-facts { color: #b0e0b0; font-size: 14px; margin-top: 20px; font-weight: 600; }
+.pbat-book-facts span { margin: 0 10px; }
+.pbat-actions { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; margin: 28px 0; }
+.pbat-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: #fcd34d; color: #042004; padding: 14px 22px; border-radius: 4px; font-size: 16px; font-weight: 700; }
+.pbat-primary:hover { background: #fde68a; }
+.pbat-primary:disabled { opacity: .65; cursor: wait; }
+.pbat-download { display: inline-flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 16px; padding: 12px 0; }
+.pbat-download:hover { text-decoration: underline; }
+.pbat-download span { font-size: 12px; color: #b0e0b0; }
+.pbat-credits { border-top: 1px solid #396339; padding-top: 20px; font-size: 13px; line-height: 1.7; color: #b0e0b0; }
+.pbat-credits strong { color: #edf6ed; font-weight: 600; }
+.pbat-cover-wrap { text-align: center; }
+.pbat-cover { width: 280px; height: auto; margin: auto; box-shadow: 9px 12px 0 #ffffff12, 0 28px 50px #0005; border-radius: 2px; }
+.pbat-cover-wrap p { font-size: 12px; color: #b0e0b0; margin-top: 24px; }
+.pbat-reader { max-width: 1240px; margin: auto; padding: 36px 24px 72px; scroll-margin-top: 100px; }
+.pbat-resume { background: #e7eddf; border: 1px solid #d6dfcc; padding: 14px 20px; margin-bottom: 24px; border-radius: 6px; display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; align-items: center; color: #0e3d0e; font-size: 14px; }
+.pbat-resume span, .pbat-resume button { display: flex; align-items: center; gap: 8px; }
+.pbat-resume button { text-align: left; font-weight: 700; }
+.pbat-resume button:hover { text-decoration: underline; }
+.pbat-reader-grid { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 32px; align-items: start; }
+.pbat-sidebar { position: sticky; top: 106px; max-height: calc(100vh - 130px); overflow-y: auto; padding: 2px 10px 16px 0; }
+.pbat-sidebar-heading { display: flex; gap: 10px; align-items: center; color: #082808; margin-bottom: 22px; }
+.pbat-sidebar-heading h2 { font-size: 20px; }
+.pbat-search-label { display: block; font-size: 13px; font-weight: 700; color: #42533b; margin-bottom: 7px; }
+.pbat-search { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #cad5c3; border-radius: 5px; padding: 10px; margin-bottom: 18px; color: #517049; }
+.pbat-search input { background: transparent; width: 100%; min-width: 0; color: #182819; font-size: 14px; outline: none; }
+.pbat-chapter-nav a { display: block; padding: 11px 13px; border-radius: 5px; color: #3f5136; font-size: 14px; line-height: 1.35; margin: 3px 0; border-left: 3px solid transparent; }
+.pbat-chapter-nav a:hover { background: #e7eddf; }
+.pbat-chapter-nav a[aria-current] { background: #082808; color: #fff; border-left-color: #fcd34d; }
+.pbat-chapter-nav small { display: block; opacity: .8; font-size: 11px; margin-top: 5px; }
+.pbat-mobile-label, .pbat-chapter-select { display: none; }
+.pbat-point-guide { margin-top: 16px; padding: 12px; background: #e7eddf; border-radius: 5px; font-size: 13px; }
+.pbat-point-guide summary { cursor: pointer; color: #0e3d0e; font-weight: 700; }
+.pbat-point-guide a { display: block; margin-top: 12px; color: #3f5136; }
+.pbat-point-guide a:hover { text-decoration: underline; }
+.pbat-search-results { font-size: 14px; color: #3f5136; }
+.pbat-search-results > p { margin: 10px 0; }
+.pbat-search-results button { display: block; width: 100%; text-align: left; padding: 12px; border-bottom: 1px solid #dce3d6; color: #082808; }
+.pbat-search-results button:hover { background: #e7eddf; }
+.pbat-search-results small { display: block; font-size: 11px; color: #517049; margin-top: 5px; }
+.pbat-search-results .pbat-clear-search { font-weight: 700; text-align: center; }
+.pbat-reading-panel { background: #fff; border: 1px solid #e0e5dc; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 24px #08280805; }
+.pbat-reader-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; padding: 16px 28px; border-bottom: 1px solid #e6eadf; color: #526348; font-size: 13px; background: #fcfdf9; }
+.pbat-text-controls { display: flex; gap: 8px; align-items: center; }
+.pbat-text-controls button { padding: 6px 10px; border: 1px solid #d6dfcc; border-radius: 4px; background: #fff; color: #082808; font-weight: 700; min-width: 38px; }
+.pbat-text-controls button:hover { background: #e7eddf; }
+.pbat-text-controls button:disabled { opacity: .4; cursor: default; }
+.pbat-book-content { padding: 38px 48px 48px; line-height: 1.85; color: #2b382a; overflow-wrap: anywhere; }
+.pbat-book-content h2, .pbat-book-content h3 { scroll-margin-top: 115px; }
+.pbat-reading-kicker { font-size: 11px; text-transform: uppercase; letter-spacing: .13em; color: #617457; font-weight: 700; }
+.pbat-book-content h2 { font-size: 1.85em; line-height: 1.25; color: #082808; margin: 12px 0 30px; }
+.pbat-book-content h3 { font-size: 1.3em; line-height: 1.4; color: #0e3d0e; margin: 40px 0 16px; }
+.pbat-book-content p { margin-bottom: 20px; white-space: pre-line; }
+.pbat-book-content p.pbat-note { font-size: .83em; color: #526348; line-height: 1.7; }
+.pbat-book-content p.pbat-benefit { background: #f0f6e9; border-left: 4px solid #b8860b; padding: 18px 22px; margin: 20px 0 32px; color: #23411c; border-radius: 0 5px 5px 0; }
+.pbat-book-content a { color: #145514; text-decoration: underline; text-underline-offset: 3px; }
+.pbat-book-content a:hover { color: #826107; }
+.book-reference { font-size: .8em; white-space: nowrap; }
+.pbat-book-content .pbat-source-title { font-family: 'Source Sans 3', sans-serif; font-size: 1.05em; font-weight: 700; }
+.pbat-back-cover { width: 260px; height: auto; margin: 40px auto 0; box-shadow: 0 6px 20px #0002; }
+.pbat-pagination { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid #e0e5dc; background: #fcfdf9; }
+.pbat-pagination button, .pbat-pagination a { display: flex; align-items: center; gap: 12px; padding: 24px; font-size: 14px; line-height: 1.45; color: #0e3d0e; text-align: left; }
+.pbat-pagination > :last-child { text-align: right; justify-content: flex-end; border-left: 1px solid #e0e5dc; }
+.pbat-pagination button:hover, .pbat-pagination a:hover { background: #e7eddf; }
+.pbat-pagination small { display: block; color: #617457; font-size: 11px; margin-bottom: 5px; }
+.pbat-pagination svg { flex-shrink: 0; }
+.pbat-status { text-align: center; padding: 48px 20px; }
+.pbat-status h2 { font-size: 28px; margin-bottom: 12px; }
+.pbat-status p { margin-bottom: 24px; }
+.pbat-status a { display: block; margin-top: 20px; color: #145514; text-decoration: underline; }
+@media (max-width: 1023px) {
+  .pbat-intro-inner { grid-template-columns: 1fr 240px; gap: 40px; }
+  .pbat-cover { width: 230px; }
+  .pbat-reader-grid { grid-template-columns: 225px minmax(0, 1fr); gap: 20px; }
+  .pbat-book-content { padding: 30px; }
+}
+@media (max-width: 767px) {
+  .pbat-intro { padding: 36px 22px 40px; }
+  .pbat-intro-inner { display: flex; flex-direction: column; gap: 32px; }
+  .pbat-intro h1 { margin-top: 18px; }
+  .pbat-description { font-size: 17px; }
+  .pbat-book-facts { font-size: 12px; }
+  .pbat-book-facts span { margin: 0 5px; }
+  .pbat-cover { width: 190px; }
+  .pbat-cover-wrap p { margin-top: 18px; }
+  .pbat-reader { padding: 24px 16px 40px; scroll-margin-top: 72px; }
+  .pbat-resume { padding: 14px; }
+  .pbat-reader-grid { display: block; }
+  .pbat-sidebar { position: static; max-height: none; padding: 0 0 24px; }
+  .pbat-sidebar-heading { margin-bottom: 16px; }
+  .pbat-chapter-nav { display: none; }
+  .pbat-mobile-label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 7px; color: #42533b; }
+  .pbat-chapter-select { display: block; width: 100%; min-height: 44px; border: 1px solid #cad5c3; border-radius: 5px; background: #fff; color: #082808; padding: 10px; font-size: 14px; }
+  .pbat-search input { font-size: 16px; }
+  .pbat-book-content { padding: 24px 20px 30px; }
+  .pbat-book-content h2 { font-size: 1.55em; }
+  .pbat-book-content h2, .pbat-book-content h3 { scroll-margin-top: 80px; }
+  .pbat-book-content p.pbat-benefit { padding: 14px 16px; }
+  .pbat-reader-toolbar { padding: 14px 16px; gap: 8px; }
+  .pbat-text-controls { gap: 5px; }
+  .pbat-pagination button, .pbat-pagination a { padding: 18px 12px; font-size: 12px; gap: 8px; }
+}

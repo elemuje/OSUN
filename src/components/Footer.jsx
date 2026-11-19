@@ -71,7 +71,7 @@ export default function Footer() {
           <div>
             <h4 className="font-display text-white font-bold text-base mb-4 pb-2 border-b border-green-800">Resources</h4>
             <ul className="space-y-2">
-              {[['Events','/events'],['Media Gallery','/gallery'],['Join RTIFN','/join'],['Contact Us','/contact'],['Press Releases','/blog?category=Press+Releases']].map(([label, path]) => (
+              {[['PBAT2.0 · Read the Book','/pbat2-0'],['Events','/events'],['Media Gallery','/gallery'],['Join RTIFN','/join'],['Contact Us','/contact'],['Press Releases','/blog?category=Press+Releases']].map(([label, path]) => (
                 <li key={path}>
                   <Link to={path} className="text-sm text-green-300 hover:text-yellow-400 transition-colors flex items-center gap-2">
                     <span className="text-green-600">›</span> {label}

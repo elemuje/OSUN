@@ -8,6 +8,7 @@ const NAV_LINKS = [
   { label: 'About', path: '/about' },
   { label: 'Executives', path: '/executives' },
   { label: 'Achievements', path: '/achievements' },
+  { label: 'PBAT2.0', path: '/pbat2-0' },
   { label: 'Blog', path: '/blog' },
   { label: 'Events', path: '/events' },
   { label: 'Gallery', path: '/gallery' },
@@ -44,7 +45,7 @@ export default function Navbar() {
                             ring-2 ring-yellow-500 group-hover:ring-yellow-400 transition-all">
               <Logo size={36} />
             </div>
-            <div className="hidden sm:block">
+            <div className="hidden sm:block lg:hidden xl:block">
               <div className="font-display text-white text-sm font-bold leading-tight">
                 RTIFN Osun State Chapter
               </div>
@@ -60,7 +61,8 @@ export default function Navbar() {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-3 py-2 text-sm font-semibold uppercase tracking-wide transition-all rounded-sm
+                aria-current={location.pathname === link.path ? 'page' : undefined}
+                className={`px-2 xl:px-3 py-2 text-xs xl:text-sm font-semibold uppercase tracking-wide transition-all rounded-sm
                   ${location.pathname === link.path
                     ? 'text-yellow-400 border-b-2 border-yellow-400'
                     : 'text-green-100 hover:text-white hover:bg-green-800'
@@ -83,6 +85,8 @@ export default function Navbar() {
             onClick={() => setOpen(!open)}
             className="lg:hidden text-white p-2 rounded focus:outline-none"
             aria-label="Toggle menu"
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
           >
             <div className={`w-6 h-0.5 bg-white mb-1.5 transition-all ${open ? 'rotate-45 translate-y-2' : ''}`} />
             <div className={`w-6 h-0.5 bg-white mb-1.5 transition-all ${open ? 'opacity-0' : ''}`} />
@@ -93,11 +97,12 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <div className="lg:hidden bg-green-950 border-t border-green-800">
+        <div id="mobile-navigation" className="lg:hidden bg-green-950 border-t border-green-800">
           {NAV_LINKS.map(link => (
             <Link
               key={link.path}
               to={link.path}
+              aria-current={location.pathname === link.path ? 'page' : undefined}
               className={`block px-6 py-3.5 text-sm font-semibold uppercase tracking-wide 
                 border-b border-green-900 transition-all
                 ${location.pathname === link.path

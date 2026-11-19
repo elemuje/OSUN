@@ -5,6 +5,29 @@
 
 Built with **Vite + React + Tailwind CSS**, powered by **Notion CMS**, ready for **Vercel** deployment.
 
+## PBAT2.0 book library
+
+Visit `/pbat2-0` to read **Road to 2027: Renewed Hope 2.0** online. The reader includes
+all 100 points, citizen benefits, source links, chapter and point navigation, full-book
+search, adjustable text size and a reading position saved locally on the reader's device.
+The home page, navigation and footer link to the library. The original 70-page PDF is
+available for download at `/books/pbat2-0/road-to-2027-renewed-hope-2.0.pdf`.
+
+The web edition is generated from the approved November 2026 Word master, preserving
+the original wording and source hyperlinks. To publish a revised book, put the matching
+`ROAD_TO_2027_RENEWED_HOPE_2.0.docx`, PDF and `ROAD_TO_2027_COVER_DESIGNS` folder
+in one folder, then run:
+
+```bash
+python scripts/prepare-pbat-book.py /path/to/book-folder
+npm run build
+```
+
+The conversion script uses Python 3 and Pillow (`pip install Pillow`), checks all 100
+points and benefits, generates `public/books/pbat2-0/book.json`, optimizes the approved
+covers for the web and copies the PDF unchanged. No external document service or
+new environment variable is required. Commit the generated assets with the source change.
+
 ---
 
 ## 🚀 Quick Start

@@ -4,6 +4,7 @@ import { fetchPosts } from '../lib/supabase'
 import { ACHIEVEMENTS, SITE } from '../lib/data'
 import PostCard from '../components/PostCard'
 import Logo from '../components/Logo'
+import PbatBookSection from '../components/PbatBookSection'
 
 export default function HomePage() {
   const [posts, setPosts] = useState([])
@@ -118,6 +119,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <PbatBookSection />
 
       {/* ===== ACHIEVEMENTS ===== */}
       <section className="py-20 bg-green-50 px-6">

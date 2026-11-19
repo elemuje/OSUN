@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -15,9 +16,12 @@ import ContactPage     from './pages/ContactPage'
 import NotFoundPage    from './pages/NotFoundPage'
 import AdminPage       from './pages/AdminPage'
 
+const PbatPage = lazy(() => import('./pages/PbatPage'))
+
 function Layout() {
   const location = useLocation()
   const isAdmin  = location.pathname.startsWith('/admin')
+  const isReading = location.pathname === '/pbat2-0'
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
@@ -28,6 +32,7 @@ function Layout() {
           <Route path="/about"          element={<AboutPage />} />
           <Route path="/executives"     element={<ExecutivesPage />} />
           <Route path="/achievements"   element={<AchievementsPage />} />
+          <Route path="/pbat2-0" element={<Suspense fallback={<p className="text-center py-20" role="status">Loading PBAT2.0…</p>}><PbatPage /></Suspense>} />
           <Route path="/blog"           element={<BlogPage />} />
           <Route path="/blog/:slug"     element={<BlogPostPage />} />
           <Route path="/events"         element={<EventsPage />} />
@@ -39,7 +44,7 @@ function Layout() {
         </Routes>
       </main>
       {!isAdmin && <Footer />}
-      {!isAdmin && (
+      {!isAdmin && !isReading && (
         <a
           href="https://chat.whatsapp.com/Li6sEGcN5Jw33BlGEwNCAk?mode=gi_t"
           target="_blank"
